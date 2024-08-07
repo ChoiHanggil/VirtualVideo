@@ -19,7 +19,7 @@ private:
 	HRESULT result;
 };
 
-inline void ThowIfFailed(HRESULT hr)
+inline void ThrowIfFailed(HRESULT hr)
 {
 	if (FAILED(hr))
 	{
@@ -37,8 +37,8 @@ public:
 	virtual int GameLoop();
 
 protected:
-	Microsoft::WRL::ComPtr<ID2D1Factory> mpD2DFactory{};
-	Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> mpRenderTarget{};
+	Microsoft::WRL::ComPtr<ID2D1Factory> mspD2DFactory{};
+	Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> mspRenderTarget{};
 
 	HRESULT InitWindow(HINSTANCE hInstacne, LPCWSTR title, UINT width, UINT height);
 	HRESULT InitD2D();

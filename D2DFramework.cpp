@@ -16,19 +16,19 @@ HRESULT D2DFramework::Init(HINSTANCE hInstacne, LPCWSTR title, UINT width, UINT 
 
 void D2DFramework::Release()
 {
-	mpRenderTarget.Reset();
-	mpD2DFactory.Reset();
+	mspRenderTarget.Reset();
+	mspD2DFactory.Reset();
 }
 
 void D2DFramework::Render()
 {
 	// 3. 弊府扁
-	mpRenderTarget->BeginDraw();
+	mspRenderTarget->BeginDraw();
 
-	mpRenderTarget->Clear(D2D1::ColorF(0.0f, 0.2f, 0.4f, 1.0f));
+	mspRenderTarget->Clear(D2D1::ColorF(0.0f, 0.2f, 0.4f, 1.0f));
 
-	mpRenderTarget->EndDraw();
-	HRESULT hr = mpRenderTarget->EndDraw();
+	mspRenderTarget->EndDraw();
+	HRESULT hr = mspRenderTarget->EndDraw();
 	if (hr == D2DERR_RECREATE_TARGET)
 	{
 		CreateDeviceResources();
@@ -74,7 +74,7 @@ HRESULT D2DFramework::InitWindow(HINSTANCE hInstacne, LPCWSTR title, UINT width,
 
 	if (!RegisterClassEx(&wc))
 	{
-		ThowIfFailed(HRESULT_FROM_WIN32(GetLastError()));
+		ThrowIfFailed(HRESULT_FROM_WIN32(GetLastError()));
 	}
 
 	RECT wr = { 0,0,(LONG)width, (LONG)height };
@@ -95,7 +95,7 @@ HRESULT D2DFramework::InitWindow(HINSTANCE hInstacne, LPCWSTR title, UINT width,
 
 	if (!hwnd)
 	{
-		ThowIfFailed(HRESULT_FROM_WIN32(GetLastError()));
+		ThrowIfFailed(HRESULT_FROM_WIN32(GetLastError()));
 		return E_FAIL;
 	}
 
@@ -108,10 +108,10 @@ HRESULT D2DFramework::InitWindow(HINSTANCE hInstacne, LPCWSTR title, UINT width,
 HRESULT D2DFramework::InitD2D()
 {
 	// 1. Factory 积己
-	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, mpD2DFactory.GetAddressOf());
+	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, mspD2DFactory.GetAddressOf());
 
 	// if(SUCCEEDED(hr))	//己傍
-	ThowIfFailed(hr);
+	ThrowIfFailed(hr);
 
 	// 2. 坊歹鸥百 积己
 	//D2D1_RENDER_TARGET_PROPERTIES rtp;
@@ -128,12 +128,12 @@ HRESULT D2DFramework::CreateDeviceResources()
 	RECT wr;
 	GetClientRect(mHwnd, &wr);
 
-	HRESULT hr = mpD2DFactory->CreateHwndRenderTarget(
+	HRESULT hr = mspD2DFactory->CreateHwndRenderTarget(
 		D2D1::RenderTargetProperties(),
 		D2D1::HwndRenderTargetProperties(mHwnd, D2D1::SizeU(wr.right - wr.left, wr.bottom - wr.top)),
-		&mpRenderTarget);
+		&mspRenderTarget);
 
-	ThowIfFailed(hr);
+	ThrowIfFailed(hr);
 
 	return S_OK;
 }
